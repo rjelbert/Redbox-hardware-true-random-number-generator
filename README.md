@@ -28,11 +28,17 @@ I built the circult into a red metal box - hence the name! This is to screen the
 I've written a calibration mode into the code. Power the unit up by plugging in the USB with the 12v disconnected. Monitor the serial port with a serial terminal and when in calibration mode plug the 12v back in. This should trigger calibration mode which shows you the PSU readings and also the 4 noise source "counts" within a 1 second window. The noise sources should tip just over 8000 - adjust the 4 pots in turn to achieve this. Be careful not to overdrive the noise generating transistors by winding the pots too far to +12v. I put the reversed biased transistors into sockets so they can be easily changed in the future. It might be better to have a button for calibration mode but that is something else for a future version.
 
 The self test runs on power up and every hour. You'll see the green light flash error codes these mean:
+
 1 flash - noise channel 1 low or no bit generation
+
 2 flashes - noise channel 2 low or no bit generation
+
 3 flashes - noise channel 3 low or no bit generation
+
 4 flashes - noise channel 4 low or no bit generation
+
 5 flashes - 12v PSU too low or too high voltage
+
 6 flashes - 12v PSU too noisy
 
 At the moment, the LED flash code stops the generation of any new random data until the Arduino is reset. This allows you to see any errors that might occur while you are away.
