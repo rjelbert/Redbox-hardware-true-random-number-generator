@@ -2,10 +2,10 @@
 
 INTRO
 
-My true random number generator project using an Arduino and 4 reversed biased transistors to generate noise...
+My true random number generator project using an Arduino Nano and 4 reversed biased transistors to generate noise...
 I started this project thinking how hard can it be to create a hardware based true random number generator. That was three 
 months back. It turns out that getting reasonable volumes of true random numbers is actually quite difficult. I'm pleased
-to report though that I think I have done it and here is code and design of what I am called The Redbox Random Number Generator.
+to report though that I think I have done it and here is code and design of what I am called my Redbox Hardware Random Number Generator.
 
 OBJECTIVE
 
@@ -15,9 +15,46 @@ often go undetected which is bad. The code does a PSU and noise source check on 
 
 RESULTS
 
-It works. If I generate 4.2GB of random data, taking around 4 days, the resulting file passes all of the Dieharder tests for randomness. I have included these test result files because you get a real sense of achievment when it finally happens. It also gets excellent results from "ent" and "rngtest" also included in this repo.
+It works. If I generate 4.2GB of random data, taking around 4 days, the resulting file passes all of the Dieharder tests for randomness. I have included these test result files because you get a real sense of achievment when it finally happens. It also gets excellent results from "ent" and "rngtest" also included in this repo. I have also included a png of the random data using a heat map type colour conversion of the 0 to 255 random values.
 
 LESSONS
 
-Generating random numbers is hard. The hardware design uses 4 reverse biased NPN transistors in 4 individual noise generators. These are fed into a schmitt inverters to digitise the signal and then a divide by 2 flip flop removes any 1 / 0 bias. The problem is if you read the sources too quickly then you get a drop in entropy and increased correleration. I have used a few tricks to improve the randomness and still read the noise sources quite quickly as you can see in the code. The first design outputted the raw entropy from the flipflop inputs to the serial port. This worked OK but even after generating 4GB of data some of the Dieharder tests were failing. I decided to whiten the hardware random numbers by xoring them with two LFSRs (Linear Feedback Shift Registers). First with an 8 bit maximal length LFSR and then again with a maximal length 16 bit LFSR. When the LFSRs finish their sequences they are both re-seeded with hardware randomness. It works very well. I encourage you to switch off the LFSRs to see the outputs and run your own tests on the raw source.
+Generating true random numbers is hard. This hardware design uses 4 reverse biased NPN transistors as 4 individual noise generators. These are fed into a schmitt inverters to digitise the signal and then a divide by 2 flip flop removes any 1 / 0 bias. The problem is if you read the sources too quickly then you get a drop in entropy and increased correleration. I have used a few tricks to improve the randomness and still read the noise sources quite quickly (as you will see in the code). The first design outputted the raw entropy from the flipflop inputs to the serial port. This worked OK but even after generating 4GB of data some of the Dieharder tests were failing. I decided to whiten the hardware random numbers by xoring them with two LFSRs (Linear Feedback Shift Registers). First with an 8 bit maximal length LFSR and then again with a maximal length 16 bit LFSR. When the LFSRs finish their sequences they are both re-seeded with hardware randomness. It works very well and to clarify, every single byte of output from Redbox starts off as 8 bits of hardware entropy before being xored with the two LFSRs so this is not an LFSR based generator! I encourage you to switch off the LFSRs to see the outputs and run your own tests on the raw source.
+
+SETUP
+
+I built the circult into a red metal box - hence the name! This is to screen the noise generator side from external noise sources that might cause randomness tests to fail. The Arduino Nano is powered from the USB port and 5v from the Arduino is used to power the 5v 74 logic components. A separate 12v PSU is needed to power the noise generators and this needs to be good quality or the self tests will fail because either the voltage will be too high or low OR there will be too much noise on it. I do recommend using capacitors accross the 12v rail close to the PCB but that might not be enough. I put a voltage divider on the 12v line of 10K and 2K2 and put this into an analogue input to monitor 12v PSU status. Add a 4.7v Zenor accross the 2K2 resistor to protect the analogue input if you like.
+
+I've written a calibration mode into the code. Power the unit up by plugging in the USB with the 12v disconnected. Monitor the serial port with a serial terminal and when in calibration mode plug the 12v back in. This should trigger calibration mode which shows you the PSU readings and also the 4 noise source "counts" within a 1 second window. The noise sources should tip just over 8000 - adjust the 4 pots in turn to achieve this. Be careful not to overdrive the noise generating transistors by winding the pots too far to +12v. I put the reversed biased transistors into sockets so they can be easily changed in the future. It might be better to have a button for calibration mode but that is something else for a future version.
+
+The self test runs on power up and every hour. You'll see the green light flash error codes these mean:
+1 flash - noise channel 1 low or no bit generation
+2 flashes - noise channel 2 low or no bit generation
+3 flashes - noise channel 3 low or no bit generation
+4 flashes - noise channel 4 low or no bit generation
+5 flashes - 12v PSU too low or too high voltage
+6 flashes - 12v PSU too noisy
+
+At the moment, the LED flash code stops the generation of any new random data until the Arduino is reset. This allows you to see any errors that might occur while you are away.
+
+CODE
+
+I have tried to include as many comments as possible in the code but the workflow is basically this:
+1) set up Arduino pins
+2) Do a self test
+3) load LFSRs with hardware random data
+4) in a loop:
+    read 64 bytes of hardware random data in a buffer,
+    xor each buffer entry with the 8bit LFSR,
+    xor each buffer entry with the bottom 8 bits of the 16bit LFSR,
+    write the 64 byte buffer to the 64 byte UART buffer
+5) every hour run the self test
+
+TESTING
+
+Be patient. This is a reasonably fast generator but you will still have to wait several days to generate 4.2GB which seems to be a good file size to use with Dieharder, ent and rngtest. I write the random data to a file (commands below) and then use the cat command or file options in these tests to check the results. If you have multiple terminal windows open you can generate the file on one terminal and then run the ent tests on the file as it is being written. Linux seems to handle this well and it means you don't have to wait until the end before you can test.
+
+I tend to test by running ent first and most of the time and then rngtest as a backup check to see how many errors are being thrown up. I then run Dieharder after generating about 100MB but you should not expect perfect results until you get nearer 4GB of data.
+
+OPERATION
 
