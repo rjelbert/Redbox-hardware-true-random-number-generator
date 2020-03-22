@@ -44,10 +44,14 @@ I have tried to include as many comments as possible in the code but the workflo
 2) Do a self test
 3) load LFSRs with hardware random data
 4) in a loop:
-    read 64 bytes of hardware random data in a buffer,
-    xor each buffer entry with the 8bit LFSR,
-    xor each buffer entry with the bottom 8 bits of the 16bit LFSR,
-    write the 64 byte buffer to the 64 byte UART buffer
+
+read 64 bytes of hardware random data in a buffer,
+
+xor each buffer entry with the 8bit LFSR,
+
+xor each buffer entry with the bottom 8 bits of the 16bit LFSR,
+
+write the 64 byte buffer to the 64 byte UART buffer
 5) every hour run the self test
 
 TESTING
