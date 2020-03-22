@@ -45,13 +45,14 @@ I have tried to include as many comments as possible in the code but the workflo
 3) load LFSRs with hardware random data
 4) in a loop:
 
-read 64 bytes of hardware random data in a buffer,
+read 64 bytes of hardware random data into a memory array / buffer,
 
 xor each buffer entry with the 8bit LFSR,
 
 xor each buffer entry with the bottom 8 bits of the 16bit LFSR,
 
 write the 64 byte buffer to the 64 byte UART buffer
+
 5) every hour run the self test
 
 TESTING
@@ -61,4 +62,38 @@ Be patient. This is a reasonably fast generator but you will still have to wait 
 I tend to test by running ent first and most of the time and then rngtest as a backup check to see how many errors are being thrown up. I then run Dieharder after generating about 100MB but you should not expect perfect results until you get nearer 4GB of data.
 
 OPERATION
+
+To use Redbox, you need to plug it into a computer into its USB 2 or 3 port. 
+
+After you plug in the Arduino or upload a new program to it, you must initialise the USB with:
+
+(adjust the port / file references as necessary - assumes Linux)
+
+stty raw -echo -ixoff -F /dev/ttyUSB1 speed 115200
+
+Then start to write the 4.2GB random data to a file:
+
+head -c 4200000000 /dev/ttyUSB1 > /media/pi/usbdisk/redbox.bin
+
+After a short while, run "ent" to test the data file:
+
+cat /media/pi/usbdisk/redbox.bin | ent
+
+You can also run rngtest:
+
+cat /media/pi/usbdisk/redbox.bin | rngtest
+
+When you have at least 100MB of random data (preferrably >4GB) you can start the Dieharder tests:
+
+dieharder -g 201 -f /media/pi/usbdisk/redbox.bin -a
+
+If you want to see the first 2MB or so of the random file as a png use my col viz script:
+
+python3 col-randvis.py /media/pi/usbdisk/redbox.bin
+
+when finished:
+
+eog /media/pi/usbdisk/redbox-col.png
+
+
 
