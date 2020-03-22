@@ -214,7 +214,7 @@ if (psu_delta > 25) { flash(6); }
  
 // chech entropy channel frequencies (ideal >8000)
 
-unsigned long lowest = 7300;
+unsigned long lowest = 7200;
 
 // check channel 1 (d2)
 counter =0;
