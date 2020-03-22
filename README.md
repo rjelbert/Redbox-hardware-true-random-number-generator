@@ -1,4 +1,4 @@
-# Redbox-true-random-number-generator
+# Redbox-hardware-true-random-number-generator
 
 INTRO
 
