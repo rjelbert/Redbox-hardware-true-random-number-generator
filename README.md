@@ -61,6 +61,8 @@ write the 64 byte buffer to the 64 byte UART buffer
 
 5) every hour run the self test
 
+The screen shot of the oscilliscope in this repo shows Redbox running. The top trace is the Arduino TX line on serial out showing the random data being sent. The bottom trace shows the Arduino D7 output pin which goes high each time the code enters the dump the 64 byte entropy buffer into the 64 byte UART buffer for loop. You can see this is triggering at 184Hz which means it is transmitting 184 * 64 bytes per second = 12.9 K BYTES per second. Not bad. There is deliberate random jitter added to the timing of the hardware random nibble reads and this shows up as jitter in the time between buffer dumps to the UART - the scope screen shows this jitter too. 
+
 TESTING
 
 Be patient. This is a reasonably fast generator but you will still have to wait several days to generate 4.2GB which seems to be a good file size to use with Dieharder, ent and rngtest. I write the random data to a file (commands below) and then use the cat command or file options in these tests to check the results. If you have multiple terminal windows open you can generate the file on one terminal and then run the ent tests on the file as it is being written. Linux seems to handle this well and it means you don't have to wait until the end before you can test.
