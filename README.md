@@ -2,14 +2,14 @@
 
 INTRO
 
-My true random number generator project using an Arduino Nano and 4 reversed biased transistors to generate noise...
-I started this project thinking how hard can it be to create a hardware based true random number generator. That was three 
+This is my true random number generator (TRNG) project using an Arduino Nano and 4 reversed biased transistors to generate noise...
+I started this project thinking "how hard can it be to create a hardware based true random number generator?". That was three 
 months back. It turns out that getting reasonable volumes of true random numbers is actually quite difficult. I'm pleased
-to report though that I think I have done it and here is code and design of what I am called my Redbox Hardware Random Number Generator.
+to report though that I think I have done it and here is code and design of what I am called my Redbox Hardware Random Number Generator. Why Redbox? Because its in a Redbox.
 
 OBJECTIVE
 
-When I started out I wanted to have something generate raw 8 byte entropy at 115200 baud over a serial / USB port which is around 10K BYTES a second. This designs meets this criteria. I decided to use 4 entropy sources to generate 4 bits (a nibble) at a time. Two reads make a byte. Most designs on the internet generate a single bit at a time which can then be aggregated to a byte but this is quite slow. The circuit diagram in this repo shows just one white noise source, you will need to make 4 of these to recreate this design. I prototyped on breadboard and then moved to solder board - see the pic.
+When I started out I wanted to have something generate raw 8 byte entropy at 115200 baud over a serial / USB port which is around 12K BYTES a second. This designs meets this criteria. I decided to use 4 entropy sources to generate 4 bits (a nibble) at a time. Two reads make a byte. Most designs on the internet generate a single bit at a time which can then be aggregated to a byte but this is quite slow. The circuit diagram in this repo shows just one white noise source, you will need to make 4 of these to recreate this design. I prototyped on breadboard and then moved to solder board - see the pic.
 I also wanted to have a self test mechanism in the design because if a hardware random number generator goes wrong, it can 
 often go undetected which is bad. The code does a PSU and noise source check on power up and then every hour. You can change the frequency. With more time, I think it would be better to have a second Arduino nano running the self test code checking PSU and noise source stats continiously but that's for another day.
 
@@ -23,7 +23,9 @@ Generating true random numbers is hard. This hardware design uses 4 reverse bias
 
 SETUP
 
-I built the circult into a red metal box - hence the name! This is to screen the noise generator side from external noise sources that might cause randomness tests to fail. The Arduino Nano is powered from the USB port and 5v from the Arduino is used to power the 5v 74 logic components. A separate 12v PSU is needed to power the noise generators and this needs to be good quality or the self tests will fail because either the voltage will be too high or low OR there will be too much noise on it. I do recommend using capacitors accross the 12v rail close to the PCB but that might not be enough. I put a voltage divider on the 12v line of 10K and 2K2 and put this into an analogue input to monitor 12v PSU status. Add a 4.7v Zenor accross the 2K2 resistor to protect the analogue input if you like.
+I built the circult into a red metal box (it's in the name). This is to screen the noise generator side from external noise sources that might cause randomness tests to fail. The Arduino Nano is powered from the USB port and 5v from the Arduino is used to power the 5v 74 logic components. A separate 12v PSU is needed to power the noise generators and this needs to be good quality or the self tests will fail because either the voltage will be too high or low OR there will be too much noise on it. I do recommend using capacitors accross the 12v rail close to the PCB but that might not be enough. I put a voltage divider on the 12v line of 10K and 2K2 and put this into an analogue input to monitor 12v PSU status. Add a 4.7v Zenor accross the 2K2 resistor to protect the analogue input if you like.
+
+Looking inside the box, you'll see that the Arduino is held down by a white 3D printed part. I have included the OpenSCAD and stl files in this repo for that part. I drilled a hole through the side of the box and through this part to secure it with a screw and bolt.
 
 I've written a calibration mode into the code. Power the unit up by plugging in the USB with the 12v disconnected. Monitor the serial port with a serial terminal and when in calibration mode plug the 12v back in. This should trigger calibration mode which shows you the PSU readings and also the 4 noise source "counts" within a 1 second window. The noise sources should tip just over 8000 - adjust the 4 pots in turn to achieve this. Be careful not to overdrive the noise generating transistors by winding the pots too far to +12v. I put the reversed biased transistors into sockets so they can be easily changed in the future. It might be better to have a button for calibration mode but that is something else for a future version.
 
