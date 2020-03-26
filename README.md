@@ -15,7 +15,7 @@ often go undetected which is bad. The code does a PSU and noise source check on 
 
 RESULTS
 
-It works. If I generate 4.2GB of random data, taking around 4 days, the resulting file passes all of the Dieharder tests for randomness. You will occasionally get WEAK results on some tests which is normal. I have included these test result files as proof and because you get a real sense of achievment when it finally happens. It also gets excellent results from "ent" and "rngtest" also included in this repo. I have also included a png of the random data using a heat map type colour conversion of the 0 to 255 random values.
+It works. If I generate 4.2GB of random data, taking around 4 days, the resulting file passes all of the Dieharder tests for randomness. You will occasionally get WEAK results on some tests which is normal. I have included these test result files as proof and because you get a real sense of achievment when it finally happens. It also gets excellent results from "ent" and "rngtest". I have also included a png of the random data using a heat map type colour conversion of the 0 to 255 random values.
 
 LESSONS
 
