@@ -1,4 +1,4 @@
-// Hardware random number generator by Richard Jelbert 1st January 2020
+// Hardware random number generator by Richard Jelbert - 1st January 2020
 // assumes four random sources with div/2 counters
 // runs serial at 115200 which is up to 14K BYTES a second max rate
 // currenly running at 11k BYTES PER SECOND
@@ -42,8 +42,8 @@ void setup() {
   digitalWrite(6,0); // turn green LED off
 
   digitalWrite(7,0);
-// go into calibrate mode if 2v PSU disconnected on power up
-// probably betteer to put this feature on a button
+// go into calibrate mode if 12v PSU disconnected on power up
+// probably betteer to put this feature on a button...
   int val = analogRead(vin);
   if (val < 400) { calibrate(); }  
   self_test();
@@ -53,7 +53,7 @@ void setup() {
   seed_lfsr8();
 }
 
-// the main loop gets random bits, builds a byte and then sends it over serial!
+// the main loop gets random nibbles, builds a byte and then sends it over serial!
 void loop(){
   
 // fill up a 64 byte buffer reading two random nibbles at a time
@@ -64,7 +64,7 @@ void loop(){
 
 // whiten the raw entropy bytes with a a couple of LFSRs...
 
-// 8 bit lfsr jumble
+// 1st do the 8 bit lfsr jumble
 int c = 0;
 for (int i = 0;i<=(buffersize-1);i++) {
 //for (int c = 0;c<=1;c++) {  
@@ -100,7 +100,7 @@ if (lfsr16 == start_state16) { seed_lfsr16(); d = 2;}
 //}
 buffer[i] = buffer[i] ^ (lfsr16 & 0b11111111);
 //buffer[i] = (lfsr16 & 0b11111111);
- // Serial.println(buffer[i], DEC);
+// Serial.println(buffer[i], DEC);
 }
 // 16 bit taps 
 // 7,9, 13 65535 (from example)
@@ -188,7 +188,7 @@ int psu_delta;
 
 psu_delta = 1000;
 psu_avr = 1000;
-while (psu_delta > 19 || psu_avr < 500 || psu_avr > 512){
+while (psu_delta > 25 || psu_avr < 498 || psu_avr > 512){
 starttime = millis();
 endtime = starttime;
 counter = 0;
@@ -208,12 +208,12 @@ psu_delta = psu_max - psu_min;
 //delay(3000);
 //Serial.println(psu_avr);
 if (psu_avr > 512) { flash(5); }
-if (psu_avr < 500) { flash(5); }
-if (psu_delta > 25) { flash(6); }
-
+if (psu_avr < 498) { flash(6); }
+if (psu_delta > 25) { flash(7); }
 }
  
-// chech entropy channel frequencies (ideal >8000)
+// check entropy channel frequencies (ideal >8000)
+// 8000 is not the real count, only what the Arduino "sees" in the loop. Real value is much higher
 
 unsigned long lowest = 7200;
 
