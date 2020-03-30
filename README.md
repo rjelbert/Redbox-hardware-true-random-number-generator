@@ -31,17 +31,19 @@ I've written a calibration mode into the code. Power the unit up by plugging in 
 
 The self test runs on power up and every hour. You'll see the green light flash error codes these mean:
 
-1 flash - noise channel 1 low or no bit generation
+1 flash - noise channel 1 low or no bit generation. If low, adjust pot or replace transistor.
 
-2 flashes - noise channel 2 low or no bit generation
+2 flashes - noise channel 2 low or no bit generation. If low, adjust pot or replace transistor.
 
-3 flashes - noise channel 3 low or no bit generation
+3 flashes - noise channel 3 low or no bit generation. If low, adjust pot or replace transistor.
 
-4 flashes - noise channel 4 low or no bit generation
+4 flashes - noise channel 4 low or no bit generation. If low, adjust pot or replace transistor.
 
-5 flashes - 12v PSU too low or too high voltage
+5 flashes - 12v PSU voltage too high. PSU may be developing a fault.
 
-6 flashes - 12v PSU too noisy
+6 flashes - 12v PSU voltage too low. PSU may be developing a fault (or mains may have dropped).
+
+7 flashes - 12v PSU too noisy. PSU may be developing a fault.
 
 At the moment, the LED flash code stops the generation of any new random data until the Arduino is reset. This allows you to see any errors that might occur while you are away.
 
