@@ -163,8 +163,9 @@ byte dly = 0;
 
 // add a random delay to create timimg jitter
 dly = (PIND & 0b00111100) >> 2; // 0 to 15
-delayMicroseconds(dly + 1);
-
+// delayMicroseconds(dly + 1);
+for (int i = 0;i<=dly;i++) { }
+  
 delayMicroseconds(10);
     aa = PIND & 0b00111100;
 delayMicroseconds(10);
