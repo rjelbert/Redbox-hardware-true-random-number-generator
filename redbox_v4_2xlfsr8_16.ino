@@ -162,9 +162,9 @@ byte bb = 0;
 byte dly = 0;
 
 // add a random delay to create timimg jitter
-dly = (PIND & 0b00111100) << 1; // 0 to 127 with steps!!
-// delayMicroseconds(dly + 1);
-for (int i = 0;i<=dly;i++) { }
+dly = (PIND & 0b00111100) >> 2;
+delayMicroseconds(dly + 2);
+// for (int i = 0;i<=dly;i++) { }
   
 delayMicroseconds(10);
     aa = PIND & 0b00111100;
