@@ -212,10 +212,10 @@ if (psu_avr < 480) { flash(6); }
 if (psu_delta > 25) { flash(7); }
 }
  
-// check entropy channel frequencies (ideal >9000)
-// 9000 is not the real count, only what the Arduino "sees" in the loop. Real value is much higher
+// check entropy channel frequencies (ideal >=10000)
+// Note 10000 is not the real count, only what the Arduino "sees" in the loop. Real value is much higher
 
-unsigned long lowest = 8000;
+unsigned long lowest = 5000;
 
 // check channel 1 (d2)
 counter =0;
