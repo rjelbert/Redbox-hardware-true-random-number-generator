@@ -87,6 +87,10 @@ Then start to write the 4.2GB random data to a file:
 
 head -c 4200000000 /dev/ttyUSB1 > /media/pi/usbdisk/redbox.bin
 
+You might also want to use rngtest in pipe mode to reject poor random data like this:
+
+cat /dev/ttyUSB0 | rngtest -p > /home/pi/redbox-random-rngtestp.bin
+
 After a short while, run "ent" to test the data file:
 
 cat /media/pi/usbdisk/redbox.bin | ent
