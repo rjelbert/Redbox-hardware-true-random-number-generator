@@ -20,7 +20,8 @@ fi
 mkdir -p ./passed
 mkdir -p ./failed
 
-for (( ; ; ))
+# just check we can pull 10 bytes off the TRNG on ttyUSB0 - exit on error, or stall if quiet
+while  cat /dev/ttyUSB0 | head -c 10 | wc -c ;
 do
 	echo "Getting entropy data from Redbox TRNG device..."
 	start_capture=$( date '+%F_%H-%M-%S' )
