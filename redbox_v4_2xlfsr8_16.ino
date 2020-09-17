@@ -22,8 +22,8 @@ byte counter8;
 // stty -a /dev/cu.usbmodem14101
 // od -x < /dev/cu.usbmodem14101
 // dieharder -g 201 -f 2_2_ghost_random.bin -a
-// dieharder -g 201 -f /media/pi/INZURA/redbox20-20.bin -a -Y 1 -D test_name -D psamples -D assessment -c ','
-// dieharder -g 201 -f /media/pi/INZURA/redbox20-20-ghost_rot1.bin -a -Y 1 -D show_rng -D test_name -D ntuple -D psamples -D assessment -D show_num -D pvalues -D tsamples -c ',' > /media/pi/INZURA/redbox20-20-ghost_rot1.tests
+// dieharder -g 201 -f /media/pi/redbox/redbox20-20.bin -a -Y 1 -D test_name -D psamples -D assessment -c ','
+// dieharder -g 201 -f /media/pi/redbox/redbox20-20-ghost_rot1.bin -a -Y 1 -D show_rng -D test_name -D ntuple -D psamples -D assessment -D show_num -D pvalues -D tsamples -c ',' > /media/pi/INZURA/redbox20-20-ghost_rot1.tests
 
 // set things up...
 void setup() {
