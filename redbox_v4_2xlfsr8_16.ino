@@ -188,7 +188,7 @@ int psu_delta;
 
 psu_delta = 1000;
 psu_avr = 1000;
-while (psu_delta > 25 || psu_avr < 480 || psu_avr > 512){
+while (psu_delta > 35 || psu_avr < 480 || psu_avr > 512){
 starttime = millis();
 endtime = starttime;
 counter = 0;
@@ -209,7 +209,7 @@ psu_delta = psu_max - psu_min;
 //Serial.println(psu_avr);
 if (psu_avr > 512) { flash(5); }
 if (psu_avr < 480) { flash(6); }
-if (psu_delta > 25) { flash(7); }
+if (psu_delta > 35) { flash(7); }
 }
  
 // check entropy channel frequencies (ideal >=10000)
