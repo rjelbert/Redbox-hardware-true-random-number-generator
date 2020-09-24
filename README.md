@@ -23,7 +23,7 @@ Generating true random numbers is hard. This hardware design uses 4 reverse bias
 
 SETUP
 
-I built the circult into a red metal box (it's in the name). This is to screen the noise generator side from external noise sources that might cause randomness tests to fail. The Arduino Nano is powered from the USB port and 5v from the Arduino is used to power the 5v 74 logic components. A separate 12v PSU is needed to power the noise generators and this needs to be good quality or the self tests will fail because either the voltage will be too high or low OR there will be too much noise on it. I do recommend using capacitors accross the 12v rail close to the PCB but that might not be enough. I put a voltage divider on the 12v line of 10K and 2K2 and put this into an analogue input to monitor 12v PSU status. Add a 4.7v Zenor accross the 2K2 resistor to protect the analogue input if you like.
+I built the circult into a red metal box (it's in the name). This is to screen the noise generator side from external noise sources that might cause randomness tests to fail. The Arduino Nano is powered from the USB port and 5v from the Arduino is used to power the 5v 74 logic components. A separate 12v PSU is needed to power the noise generators and this needs to be good quality or the self tests will fail because either the voltage will be too high or low OR there will be too much noise on it. I do recommend using capacitors accross the 12v rail close to the PCB but that might not be enough. I put a voltage divider on the 12v line of 10K and 2K2 and put this into an analogue input to monitor 12v PSU status. Add a 4.7v Zenor accross the 2K2 resistor to protect the analogue input if you like. If you use a switched mode PSU to power redbox, I'd recommend putting a 100ohm resistor accross the power rail to load the PSU a little and stabalise the voltage. Better to use a high quality PSU in the first instance but as it does not draw very much current running without the load resistor might allow more noise than you'd like and trip the tests.  
 
 Looking inside the box, you'll see that the Arduino is held down by a white 3D printed part. I have included the OpenSCAD and stl files in this repo for that part. I drilled a hole through the side of the box and through this part to secure it with a screw and bolt.
 
@@ -106,6 +106,9 @@ dieharder -g 201 -f /media/pi/usbdisk/redbox.bin -a
 If you want to see the first 2MB or so of the random file as a png use my col viz script:
 
 python3 col-randvis.py /media/pi/usbdisk/redbox.bin
+
+I also found this great one-liner to show random data as an image:
+sudo cat /dev/urandom  | rawtoppm -rgb 1024 768 | pnmtopng > random$(date +%Y%m%d%H%M%S).png
 
 when finished:
 
