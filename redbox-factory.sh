@@ -26,7 +26,12 @@ do
 	echo "Getting entropy data from Redbox TRNG device..."
 	start_capture=$( date '+%F_%H-%M-%S' )
 	echo $start_capture
-	cat /dev/ttyUSB0 | rngtest -p | head -c 4200000000 > ./$start_capture'.random'
+	
+	cat /dev/ttyUSB0 | rngtest -p | head -c 1050000000 > ./$start_capture'.random'
+        cat /dev/ttyUSB0 | rngtest -p | head -c 1050000000 >> ./$start_capture'.random'
+        cat /dev/ttyUSB0 | rngtest -p | head -c 1050000000 >> ./$start_capture'.random'
+        cat /dev/ttyUSB0 | rngtest -p | head -c 1050000000 >> ./$start_capture'.random'
+	
 	end_capture=$( date '+%F_%H-%M-%S' )
 	echo $end_capture
 	echo "Got data, checking entropy quality..."
