@@ -114,5 +114,11 @@ when finished:
 
 eog /media/pi/usbdisk/redbox-col.png
 
+If you want to view the random stream of data, here are a couple of options:
 
+cat /dev/ttyUSB0 | xxd -c 16
+cat /dev/ttyUSB0 | od -x
 
+If you want to use the redbox random data to top-up (not replace) your system entropy pool:
+
+rngd -r /dev/ttyUSB0
