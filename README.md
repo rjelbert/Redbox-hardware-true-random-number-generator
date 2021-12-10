@@ -123,3 +123,7 @@ cat /dev/ttyUSB0 | od -x
 If you want to use the redbox random data to top-up (not replace) your system entropy pool:
 
 rngd -r /dev/ttyUSB0
+
+To check your system entropy (Linux):
+
+cat /proc/sys/kernel/random/entropy_avail
